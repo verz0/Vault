@@ -1,0 +1,12 @@
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/vault
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/icudtl.dat
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/lib/libflutter_linux_gtk.so
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/kernel_blob.bin
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/NOTICES.Z
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/version.json
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/NOTICES
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/shaders/ink_sparkle.frag
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/AssetManifest.json
+/home/verz/FLUT/vault/build/linux/x64/debug/bundle/data/flutter_assets/FontManifest.json

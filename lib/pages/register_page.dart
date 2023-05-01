@@ -3,6 +3,7 @@ import 'package:vault/components/mybutton.dart';
 import 'package:vault/components/squaretile.dart';
 import 'package:vault/components/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vault/services/auth.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -67,21 +68,17 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.lock,
-                  size: 100,
-                ),
+                Image.asset('lib/images/logo.png'),
                 const SizedBox(
                   height: 50,
                 ),
-                Text(
-                  'Let\'s create an account for you!',
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 16,
-                  ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Let's create an account for you!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 50),
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -134,10 +131,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SquareTile(imagePath: 'lib/images/google.png'),
+                  children: [
+                    SquareTile(
+                        onTap: () => AuthService().signInWithGoogle(),
+                        imagePath: 'lib/images/google.png'),
                     SizedBox(width: 25),
-                    SquareTile(imagePath: 'lib/images/apple.png')
+                    SquareTile(onTap: () {}, imagePath: 'lib/images/apple.png')
                   ],
                 ),
                 const SizedBox(height: 50),

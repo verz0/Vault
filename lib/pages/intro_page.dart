@@ -24,7 +24,7 @@ class IntroPage extends StatelessWidget {
           children: [
             Image.asset('lib/images/logo.png'),
             const SizedBox(
-              height: 60,
+              height: 100,
             ),
             Image.asset('lib/images/man.png'),
             const SizedBox(
@@ -36,7 +36,7 @@ class IntroPage extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
             ),
             const SizedBox(
-              height: 170,
+              height: 130,
             ),
             MyButton(
                 onTap: () => Navigator.pushReplacementNamed(context, '/auth'),

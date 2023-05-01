@@ -3,6 +3,7 @@ import 'package:vault/components/mybutton.dart';
 import 'package:vault/components/squaretile.dart';
 import 'package:vault/components/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vault/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -75,21 +76,27 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.lock,
-                  size: 100,
-                ),
+                Image.asset('lib/images/logo.png'),
                 const SizedBox(
-                  height: 50,
+                  height: 25,
                 ),
-                Text(
-                  'Welcome back, you\'ve been missed!',
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 16,
-                  ),
+                Image.asset(
+                  'lib/images/enter.png',
+                  width: 300,
+                  height: 200,
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 10),
+                const Text(
+                  "Hi there!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                const Text(
+                  "You've been missed!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                ),
+                const SizedBox(height: 30),
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -119,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                   text: "Sign In",
                   onTap: signUserIn,
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Row(
@@ -146,16 +153,18 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SquareTile(imagePath: 'lib/images/google.png'),
+                  children: [
+                    SquareTile(
+                        onTap: () => AuthService().signInWithGoogle(),
+                        imagePath: 'lib/images/google.png'),
                     SizedBox(width: 25),
-                    SquareTile(imagePath: 'lib/images/apple.png')
+                    SquareTile(onTap: () {}, imagePath: 'lib/images/apple.png')
                   ],
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

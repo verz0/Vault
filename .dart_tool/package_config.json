@@ -20,6 +20,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "basic_utils",
+      "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/basic_utils-5.5.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1",
       "packageUri": "lib/",
@@ -38,10 +44,34 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "cloud_firestore",
+      "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/cloud_firestore-4.5.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "cloud_firestore_platform_interface",
+      "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/cloud_firestore_platform_interface-5.12.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "cloud_firestore_web",
+      "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/cloud_firestore_web-3.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "collection",
       "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/collection-1.17.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "convert",
+      "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/convert-3.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "cupertino_icons",
@@ -182,10 +212,22 @@
       "languageVersion": "2.16"
     },
     {
+      "name": "json_annotation",
+      "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/json_annotation-4.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "lints",
       "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/lints-2.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "logging",
+      "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/logging-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "matcher",
@@ -228,6 +270,12 @@
       "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "pointycastle",
+      "rootUri": "file:///home/verz/.pub-cache/hosted/pub.dev/pointycastle-3.7.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "quiver",
@@ -320,7 +368,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-04-28T20:22:42.261888Z",
+  "generated": "2023-05-01T18:14:31.120843Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }

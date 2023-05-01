@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:basic_utils/basic_utils.dart';
+import 'package:vault/pages/home.dart';
 
 class form extends StatefulWidget {
   const form({super.key});
@@ -74,7 +75,7 @@ class _formState extends State<form> {
           Container(
             width: double.infinity,
             child: Image.asset(
-              'assets/Star.png',
+              'lib/images/Star.png',
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -926,7 +927,7 @@ class _formState extends State<form> {
                 ),
 
                 ElevatedButton(
-                    onPressed: signIn,
+                    onPressed: () => signIn(context),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 63, 61, 86),
                         minimumSize: Size(172, 55)),
@@ -948,7 +949,11 @@ class _formState extends State<form> {
     ));
   }
 
-  Future<void> signIn() async {
+  Future<void> signIn(BuildContext context) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => home()),
+    );
     await firestoreInstance.collection("Userdata").doc("user1").set({
       'name': nameController.text.trim(),
       'Date_of_birth': DateController.text.trim(),

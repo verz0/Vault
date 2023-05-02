@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:basic_utils/basic_utils.dart';
@@ -65,887 +66,949 @@ class _formState extends State<form> {
   final firestoreInstance = FirebaseFirestore.instance;
   String dropdownvalue = 'Blood Group';
 
+  final user = FirebaseAuth.instance.currentUser!;
+
+  void signUserOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(onPressed: signUserOut, icon: const Icon(Icons.logout))
+          ],
+        ),
         body: SafeArea(
-      child: SingleChildScrollView(
-        child: Stack(children: [
-          Container(
-            width: double.infinity,
-            child: Image.asset(
-              'assets/Star.png',
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
-                  child: Column(children: [
+          child: SingleChildScrollView(
+            child: Stack(children: [
+              Container(
+                width: double.infinity,
+                child: Image.asset(
+                  'images/star.png',
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
+                child: Column(
+                  children: [
                     Container(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Text(
-                          "Add/Edit details",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 24),
-                        )),
-                    const SizedBox(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 10, right: 20),
+                      child: Column(children: [
+                        Container(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Text(
+                              "Add/Edit details",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 24),
+                            )),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        Container(
+                            padding: const EdgeInsets.only(right: 240),
+                            child: Text(
+                              "General",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 24),
+                            )),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          child: TextField(
+                            controller: nameController,
+                            decoration: InputDecoration(
+                                hintText: 'Name',
+                                fillColor: Color.fromARGB(255, 255, 255, 255),
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                          ),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: DateController,
+                          decoration: InputDecoration(
+                              hintText: 'Date of Birth',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: sexController,
+                          decoration: InputDecoration(
+                              hintText: 'Sex',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: phoneController,
+                          decoration: InputDecoration(
+                              hintText: 'Phone No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                              hintText: 'E-mail ID',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: CountryController,
+                          decoration: InputDecoration(
+                              hintText: 'Country',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: stateController,
+                          decoration: InputDecoration(
+                              hintText: 'State',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    SizedBox(
                       height: 50,
                     ),
+                    // =====================
                     Container(
                         padding: const EdgeInsets.only(right: 240),
                         child: Text(
-                          "General",
+                          "Addresses",
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 24),
                         )),
-                    const SizedBox(
-                      height: 10,
+                    SizedBox(
+                      height: 20,
                     ),
                     Container(
-                      child: TextField(
-                        controller: nameController,
-                        decoration: InputDecoration(
-                            hintText: 'Name',
-                            fillColor: Color.fromARGB(255, 255, 255, 255),
-                            filled: true,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                      ),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: DateController,
-                      decoration: InputDecoration(
-                          hintText: 'Date of Birth',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: sexController,
-                      decoration: InputDecoration(
-                          hintText: 'Sex',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
+                        padding: const EdgeInsets.only(right: 180),
+                        child: Text(
+                          "Current Address",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24,
+                              color: Color.fromARGB(115, 187, 187, 187)),
+                        )),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: HouseController,
+                          decoration: InputDecoration(
+                              hintText: 'House/Apartment No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: StreetController,
+                          decoration: InputDecoration(
+                              hintText: 'Street Name',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: locaController,
+                          decoration: InputDecoration(
+                              hintText: 'Locality',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: townController,
+                          decoration: InputDecoration(
+                              hintText: 'Town/City',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: districtController,
+                          decoration: InputDecoration(
+                              hintText: 'District',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
 
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: phoneController,
-                      decoration: InputDecoration(
-                          hintText: 'Phone No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                          hintText: 'E-mail ID',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: CountryController,
-                      decoration: InputDecoration(
-                          hintText: 'Country',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: stateController,
-                      decoration: InputDecoration(
-                          hintText: 'State',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                // =====================
-                Container(
-                    padding: const EdgeInsets.only(right: 240),
-                    child: Text(
-                      "Addresses",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
-                    )),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(right: 180),
-                    child: Text(
-                      "Current Address",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24,
-                          color: Color.fromARGB(115, 187, 187, 187)),
-                    )),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: HouseController,
-                      decoration: InputDecoration(
-                          hintText: 'House/Apartment No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: StreetController,
-                      decoration: InputDecoration(
-                          hintText: 'Street Name',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: locaController,
-                      decoration: InputDecoration(
-                          hintText: 'Locality',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: townController,
-                      decoration: InputDecoration(
-                          hintText: 'Town/City',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: districtController,
-                      decoration: InputDecoration(
-                          hintText: 'District',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: pinController,
+                          decoration: InputDecoration(
+                              hintText: 'Pincode',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    // ==============================
+                    Container(
+                        padding: const EdgeInsets.only(right: 180),
+                        child: Text(
+                          "Office Address",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24,
+                              color: Color.fromARGB(115, 187, 187, 187)),
+                        )),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: buildbuController,
+                          decoration: InputDecoration(
+                              hintText: 'Building No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: streetbuController,
+                          decoration: InputDecoration(
+                              hintText: 'Street Name',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: locabuController,
+                          decoration: InputDecoration(
+                              hintText: 'Locality',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: districtbuController,
+                          decoration: InputDecoration(
+                              hintText: 'District',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: statebuController,
+                          decoration: InputDecoration(
+                              hintText: 'State',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: CountrybuController,
+                          decoration: InputDecoration(
+                              hintText: 'Country',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: pinbuController,
+                          decoration: InputDecoration(
+                              hintText: 'Pincode',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: officebuController,
+                          decoration: InputDecoration(
+                              hintText: 'Office Telephone No.',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    // ======================
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.only(right: 180),
+                        child: Text(
+                          "Permanent Address",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24,
+                              color: Color.fromARGB(115, 187, 187, 187)),
+                        )),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: houseperController,
+                          decoration: InputDecoration(
+                              hintText: 'House/Apartment No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: streetperController,
+                          decoration: InputDecoration(
+                              hintText: 'Street Name',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: locaperController,
+                          decoration: InputDecoration(
+                              hintText: 'Locality',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: townperController,
+                          decoration: InputDecoration(
+                              hintText: 'Town/City',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: districtperController,
+                          decoration: InputDecoration(
+                              hintText: 'District',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: stateperController,
+                          decoration: InputDecoration(
+                              hintText: 'State',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: countryperController,
+                          decoration: InputDecoration(
+                              hintText: 'Country',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: pinerController,
+                          decoration: InputDecoration(
+                              hintText: 'Pincode',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    // ================
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.only(right: 180),
+                        child: Text(
+                          "Government",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 24,
+                          ),
+                        )),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: aadharController,
+                          decoration: InputDecoration(
+                              hintText: 'Addhar No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: panController,
+                          decoration: InputDecoration(
+                              hintText: 'Pan Card No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: voterController,
+                          decoration: InputDecoration(
+                              hintText: 'Voter ID',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: drivingController,
+                          decoration: InputDecoration(
+                              hintText: 'Driving Licence No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: digilockerController,
+                          decoration: InputDecoration(
+                              hintText: 'Digilocker ID',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: passportController,
+                          decoration: InputDecoration(
+                              hintText: 'Passport ID',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    // ==================
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.only(right: 180),
+                        child: Text(
+                          "Education",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 24,
+                          ),
+                        )),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: schoolboardController,
+                          decoration: InputDecoration(
+                              hintText: 'School Board',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: rollController,
+                          decoration: InputDecoration(
+                              hintText: 'Roll No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: schoolcodeController,
+                          decoration: InputDecoration(
+                              hintText: 'School Code',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: schoolController,
+                          decoration: InputDecoration(
+                              hintText: 'School Name',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: schooladdController,
+                          decoration: InputDecoration(
+                              hintText: 'School Address',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: scoreController,
+                          decoration: InputDecoration(
+                              hintText: 'Score(%)',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    // =============================
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.only(right: 180),
+                        child: Text(
+                          "Health",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 24,
+                          ),
+                        )),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: bloodController,
+                          decoration: InputDecoration(
+                              hintText: 'Blood Type',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: heightController,
+                          decoration: InputDecoration(
+                              hintText: 'Height',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: weightController,
+                          decoration: InputDecoration(
+                              hintText: 'Weight',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: conditionController,
+                          decoration: InputDecoration(
+                              hintText: 'Medical Condition',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: bmiController,
+                          decoration: InputDecoration(
+                              hintText: 'BMI',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: allgController,
+                          decoration: InputDecoration(
+                              hintText: 'Allergies',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    // ============================
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.only(right: 180),
+                        child: Text(
+                          "Bank Details",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 24,
+                          ),
+                        )),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: banknameController,
+                          decoration: InputDecoration(
+                              hintText: 'Bank Name',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: branchController,
+                          decoration: InputDecoration(
+                              hintText: 'Branch Code',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: accController,
+                          decoration: InputDecoration(
+                              hintText: 'Account No',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 40, right: 20),
+                      child: Column(children: [
+                        TextField(
+                          controller: ifscController,
+                          decoration: InputDecoration(
+                              hintText: 'IFSC Code',
+                              fillColor: Color.fromARGB(255, 255, 255, 255),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        )
+                      ]),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
 
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: pinController,
-                      decoration: InputDecoration(
-                          hintText: 'Pincode',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
+                    ElevatedButton(
+                        onPressed: signIn,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 63, 61, 86),
+                            minimumSize: Size(172, 55)),
+                        child: Text(
+                          'Done',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                          ),
+                        )),
+                    SizedBox(
+                      height: 50,
                     )
-                  ]),
+                  ],
                 ),
-                SizedBox(
-                  height: 50,
-                ),
-                // ==============================
-                Container(
-                    padding: const EdgeInsets.only(right: 180),
-                    child: Text(
-                      "Office Address",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24,
-                          color: Color.fromARGB(115, 187, 187, 187)),
-                    )),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: buildbuController,
-                      decoration: InputDecoration(
-                          hintText: 'Building No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: streetbuController,
-                      decoration: InputDecoration(
-                          hintText: 'Street Name',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: locabuController,
-                      decoration: InputDecoration(
-                          hintText: 'Locality',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: districtbuController,
-                      decoration: InputDecoration(
-                          hintText: 'District',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: statebuController,
-                      decoration: InputDecoration(
-                          hintText: 'State',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: CountrybuController,
-                      decoration: InputDecoration(
-                          hintText: 'Country',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: pinbuController,
-                      decoration: InputDecoration(
-                          hintText: 'Pincode',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: officebuController,
-                      decoration: InputDecoration(
-                          hintText: 'Office Telephone No.',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                // ======================
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(right: 180),
-                    child: Text(
-                      "Permanent Address",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24,
-                          color: Color.fromARGB(115, 187, 187, 187)),
-                    )),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: houseperController,
-                      decoration: InputDecoration(
-                          hintText: 'House/Apartment No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: streetperController,
-                      decoration: InputDecoration(
-                          hintText: 'Street Name',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: locaperController,
-                      decoration: InputDecoration(
-                          hintText: 'Locality',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: townperController,
-                      decoration: InputDecoration(
-                          hintText: 'Town/City',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: districtperController,
-                      decoration: InputDecoration(
-                          hintText: 'District',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: stateperController,
-                      decoration: InputDecoration(
-                          hintText: 'State',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: countryperController,
-                      decoration: InputDecoration(
-                          hintText: 'Country',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: pinerController,
-                      decoration: InputDecoration(
-                          hintText: 'Pincode',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                // ================
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(right: 180),
-                    child: Text(
-                      "Government",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24,
-                      ),
-                    )),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: aadharController,
-                      decoration: InputDecoration(
-                          hintText: 'Addhar No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: panController,
-                      decoration: InputDecoration(
-                          hintText: 'Pan Card No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: voterController,
-                      decoration: InputDecoration(
-                          hintText: 'Voter ID',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: drivingController,
-                      decoration: InputDecoration(
-                          hintText: 'Driving Licence No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: digilockerController,
-                      decoration: InputDecoration(
-                          hintText: 'Digilocker ID',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: passportController,
-                      decoration: InputDecoration(
-                          hintText: 'Passport ID',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                // ==================
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(right: 180),
-                    child: Text(
-                      "Education",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24,
-                      ),
-                    )),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: schoolboardController,
-                      decoration: InputDecoration(
-                          hintText: 'School Board',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: rollController,
-                      decoration: InputDecoration(
-                          hintText: 'Roll No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: schoolcodeController,
-                      decoration: InputDecoration(
-                          hintText: 'School Code',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: schoolController,
-                      decoration: InputDecoration(
-                          hintText: 'School Name',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: schooladdController,
-                      decoration: InputDecoration(
-                          hintText: 'School Address',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: scoreController,
-                      decoration: InputDecoration(
-                          hintText: 'Score(%)',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                // =============================
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(right: 180),
-                    child: Text(
-                      "Health",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24,
-                      ),
-                    )),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: bloodController,
-                      decoration: InputDecoration(
-                          hintText: 'Blood Type',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: heightController,
-                      decoration: InputDecoration(
-                          hintText: 'Height',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: weightController,
-                      decoration: InputDecoration(
-                          hintText: 'Weight',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: conditionController,
-                      decoration: InputDecoration(
-                          hintText: 'Medical Condition',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: bmiController,
-                      decoration: InputDecoration(
-                          hintText: 'BMI',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: allgController,
-                      decoration: InputDecoration(
-                          hintText: 'Allergies',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                // ============================
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(right: 180),
-                    child: Text(
-                      "Bank Details",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24,
-                      ),
-                    )),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: banknameController,
-                      decoration: InputDecoration(
-                          hintText: 'Bank Name',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: branchController,
-                      decoration: InputDecoration(
-                          hintText: 'Branch Code',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: accController,
-                      decoration: InputDecoration(
-                          hintText: 'Account No',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
-                  child: Column(children: [
-                    TextField(
-                      controller: ifscController,
-                      decoration: InputDecoration(
-                          hintText: 'IFSC Code',
-                          fillColor: Color.fromARGB(255, 255, 255, 255),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )
-                  ]),
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-
-                ElevatedButton(
-                    onPressed: signIn,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 63, 61, 86),
-                        minimumSize: Size(172, 55)),
-                    child: Text(
-                      'Done',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                      ),
-                    )),
-                SizedBox(
-                  height: 50,
-                )
-              ],
-            ),
-          )
-        ]),
-      ),
-    ));
+              )
+            ]),
+          ),
+        ));
   }
 
   Future<void> signIn() async {

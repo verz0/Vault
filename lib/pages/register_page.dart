@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:vault/components/mybutton.dart';
 import 'package:vault/components/squaretile.dart';
@@ -17,6 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final passwordController = TextEditingController();
+  final usernameController = TextEditingController();
 
   void signUserUp() async {
     showDialog(
@@ -28,10 +30,23 @@ class _RegisterPageState extends State<RegisterPage> {
         });
     try {
       if (passwordController.text == confirmPasswordController.text) {
+        final usernameExists =
+            await checkIfUsernameExists(usernameController.text);
+        if (usernameExists) {
+          Navigator.pop(context);
+          showErrorMessage('Username already exists!');
+          return;
+        }
+
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
+
+        await FirebaseFirestore.instance.collection('users').doc().set({
+          'username': usernameController.text,
+          'email': emailController.text,
+        });
       } else {
         showErrorMessage("Passwords don't match!");
       }
@@ -40,6 +55,14 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.pop(context);
       showErrorMessage(e.code);
     }
+  }
+
+  Future<bool> checkIfUsernameExists(String username) async {
+    final result = await FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: username)
+        .get();
+    return result.docs.isNotEmpty;
   }
 
   void showErrorMessage(String message) {
@@ -79,6 +102,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
                 const SizedBox(height: 50),
+                MyTextField(
+                  controller: usernameController,
+                  hintText: 'Username',
+                  obscureText: false,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
